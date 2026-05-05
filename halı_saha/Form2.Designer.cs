@@ -81,6 +81,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Green;
+            this.BackgroundImage = global::halı_saha.Properties.Resources.Ekran_görüntüsü_2026_05_05_175358;
             this.ClientSize = new System.Drawing.Size(964, 532);
             this.Controls.Add(this.lblTakim2Ozet);
             this.Controls.Add(this.lblTakim1Ozet);
