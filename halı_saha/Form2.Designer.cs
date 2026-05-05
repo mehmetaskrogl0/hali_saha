@@ -61,7 +61,7 @@
             this.lblTakim1Ozet.ForeColor = System.Drawing.Color.White;
             this.lblTakim1Ozet.Location = new System.Drawing.Point(66, 364);
             this.lblTakim1Ozet.Name = "lblTakim1Ozet";
-            this.lblTakim1Ozet.Size = new System.Drawing.Size(131, 20);
+            this.lblTakim1Ozet.Size = new System.Drawing.Size(116, 20);
             this.lblTakim1Ozet.TabIndex = 2;
             this.lblTakim1Ozet.Text = "Toplam Güç:";
             // 
@@ -72,7 +72,7 @@
             this.lblTakim2Ozet.ForeColor = System.Drawing.Color.White;
             this.lblTakim2Ozet.Location = new System.Drawing.Point(442, 334);
             this.lblTakim2Ozet.Name = "lblTakim2Ozet";
-            this.lblTakim2Ozet.Size = new System.Drawing.Size(131, 20);
+            this.lblTakim2Ozet.Size = new System.Drawing.Size(116, 20);
             this.lblTakim2Ozet.TabIndex = 3;
             this.lblTakim2Ozet.Text = "Toplam Güç:";
             // 
