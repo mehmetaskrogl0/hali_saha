@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -15,11 +16,13 @@ namespace halı_saha
             InitializeComponent();
             _takimA = takimA;
             _takimB = takimB;
+            Resize += Form2_Resize;
         }
 
         public Form2()
         {
             InitializeComponent();
+            Resize += Form2_Resize;
         }
 
         private void Form2_Load_1(object sender, EventArgs e)
@@ -41,10 +44,105 @@ namespace halı_saha
 
                 lblTakim1Ozet.Text = TakimOzetiOlustur(_takimA);
                 lblTakim2Ozet.Text = TakimOzetiOlustur(_takimB);
+
+                lstTakim1.Visible = false;
+                lstTakim2.Visible = false;
+                lblTakim1Ozet.Visible = false;
+                lblTakim2Ozet.Visible = false;
+
+                TakimlariSahayaYerlestir();
             }
             else
             {
                 MessageBox.Show("Oyuncu listesi alınamadı!");
+            }
+        }
+
+        private void Form2_Resize(object sender, EventArgs e)
+        {
+            TakimlariSahayaYerlestir();
+        }
+
+        private void TakimlariSahayaYerlestir()
+        {
+            if (_takimA == null || _takimB == null)
+            {
+                return;
+            }
+
+            TemizleSahaEtiketleri();
+
+            List<PointF> takimAKonumlar = new List<PointF>
+            {
+                new PointF(0.10f, 0.50f),
+                new PointF(0.23f, 0.28f),
+                new PointF(0.23f, 0.72f),
+                new PointF(0.40f, 0.38f),
+                new PointF(0.40f, 0.62f),
+                new PointF(0.58f, 0.28f),
+                new PointF(0.58f, 0.72f)
+            };
+
+            List<PointF> takimBKonumlar = new List<PointF>
+            {
+                new PointF(0.90f, 0.50f),
+                new PointF(0.77f, 0.28f),
+                new PointF(0.77f, 0.72f),
+                new PointF(0.60f, 0.38f),
+                new PointF(0.60f, 0.62f),
+                new PointF(0.42f, 0.28f),
+                new PointF(0.42f, 0.72f)
+            };
+
+            OyuncuEtiketleriEkle(_takimA, takimAKonumlar, 1);
+            OyuncuEtiketleriEkle(_takimB, takimBKonumlar, 1 + _takimA.Count);
+        }
+
+        private void OyuncuEtiketleriEkle(List<Form1.SecilenOyuncu> takim, List<PointF> konumlar, int baslangicNo)
+        {
+            int genislik = ClientSize.Width;
+            int yukseklik = ClientSize.Height;
+
+            for (int i = 0; i < takim.Count && i < konumlar.Count; i++)
+            {
+                PointF oran = konumlar[i];
+                int x = (int)(genislik * oran.X);
+                int y = (int)(yukseklik * oran.Y);
+
+                Label numara = new Label
+                {
+                    Tag = "SahaOyuncu",
+                    Text = (baslangicNo + i).ToString(),
+                    BackColor = Color.White,
+                    ForeColor = Color.Black,
+                    Size = new Size(26, 26),
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Location = new Point(x - 13, y - 13)
+                };
+
+                Label isim = new Label
+                {
+                    Tag = "SahaOyuncu",
+                    Text = takim[i].Isim,
+                    BackColor = Color.FromArgb(160, Color.Black),
+                    ForeColor = Color.White,
+                    AutoSize = true,
+                    Location = new Point(x - 18, y + 16)
+                };
+
+                Controls.Add(numara);
+                Controls.Add(isim);
+                numara.BringToFront();
+                isim.BringToFront();
+            }
+        }
+
+        private void TemizleSahaEtiketleri()
+        {
+            foreach (Control kontrol in Controls.OfType<Control>().Where(c => c.Tag as string == "SahaOyuncu").ToList())
+            {
+                Controls.Remove(kontrol);
+                kontrol.Dispose();
             }
         }
 
