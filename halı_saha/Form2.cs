@@ -157,7 +157,11 @@ namespace halı_saha
 
         private static bool IsKaleci(string bolge)
         {
-            return NormalizeBolge(bolge) == "kaleci";
+            string normalized = NormalizeBolge(bolge);
+            return normalized == "kaleci"
+                || normalized == "kalecı"
+                || normalized == "kale"
+                || normalized == "gk";
         }
 
         private static bool IsDefans(string bolge)
