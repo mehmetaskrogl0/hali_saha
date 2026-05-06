@@ -22,7 +22,7 @@ namespace halı_saha
             da.Fill(dt);
             dataGridView1.DataSource = dt;
             con.Close();
-
+            
             lblSayac.Text = "Seçili oyuncu sayısı: 0 / 14";
             button3.Enabled = false;
         }
@@ -172,6 +172,12 @@ namespace halı_saha
 
             if (secilenler.Count == 14)
             {
+                int kaleciSayisi = secilenler.Count(o => IsKaleci(o.Bolge));
+                int defansSayisi = secilenler.Count(o => IsDefans(o.Bolge));
+                int ofansSayisi = secilenler.Count(o => IsOfans(o.Bolge));
+
+                
+
                 List<SecilenOyuncu> takimA;
                 List<SecilenOyuncu> takimB;
 
@@ -190,12 +196,6 @@ namespace halı_saha
         {
             Random rnd = new Random();
 
-            List<SecilenOyuncu> siraliListe = secilenler
-                .OrderBy(o => NormalizeBolge(o.Bolge))
-                .ThenByDescending(o => o.SeviyePuani)
-                .ThenBy(o => rnd.Next())
-                .ToList();
-
             takimA = new List<SecilenOyuncu>();
             takimB = new List<SecilenOyuncu>();
 
@@ -205,39 +205,67 @@ namespace halı_saha
             int puanA = 0;
             int puanB = 0;
 
-            foreach (SecilenOyuncu oyuncu in siraliListe)
+            List<SecilenOyuncu> kaleciler = secilenler
+                .Where(o => IsKaleci(o.Bolge))
+                .OrderByDescending(o => o.SeviyePuani)
+                .ThenBy(o => rnd.Next())
+                .ToList();
+
+            List<SecilenOyuncu> defanslar = secilenler
+                .Where(o => IsDefans(o.Bolge))
+                .OrderByDescending(o => o.SeviyePuani)
+                .ThenBy(o => rnd.Next())
+                .ToList();
+
+            List<SecilenOyuncu> ofanslar = secilenler
+                .Where(o => IsOfans(o.Bolge))
+                .OrderByDescending(o => o.SeviyePuani)
+                .ThenBy(o => rnd.Next())
+                .ToList();
+
+            RolleriDagit(kaleciler, "kaleci", 1, takimA, takimB, sayacA, sayacB, ref puanA, ref puanB, rnd);
+            RolleriDagit(defanslar, "defansif", 2, takimA, takimB, sayacA, sayacB, ref puanA, ref puanB, rnd);
+            RolleriDagit(ofanslar, "ofansif", 4, takimA, takimB, sayacA, sayacB, ref puanA, ref puanB, rnd);
+        }
+
+        private static void RolleriDagit(
+            List<SecilenOyuncu> oyuncular,
+            string rol,
+            int maxPerTeam,
+            List<SecilenOyuncu> takimA,
+            List<SecilenOyuncu> takimB,
+            Dictionary<string, int> sayacA,
+            Dictionary<string, int> sayacB,
+            ref int puanA,
+            ref int puanB,
+            Random rnd)
+        {
+            foreach (SecilenOyuncu oyuncu in oyuncular)
             {
-                if (takimA.Count == 7)
+                int rolA = GetBolgeSayisi(sayacA, rol);
+                int rolB = GetBolgeSayisi(sayacB, rol);
+
+                if (rolA >= maxPerTeam)
                 {
                     TakimaEkle(takimB, sayacB, oyuncu, ref puanB);
                     continue;
                 }
 
-                if (takimB.Count == 7)
+                if (rolB >= maxPerTeam)
                 {
                     TakimaEkle(takimA, sayacA, oyuncu, ref puanA);
                     continue;
                 }
 
-                int bolgeA = GetBolgeSayisi(sayacA, oyuncu.Bolge);
-                int bolgeB = GetBolgeSayisi(sayacB, oyuncu.Bolge);
-
                 bool ekleA;
 
-                if (puanA == puanB)
+                if (rolA != rolB)
                 {
-                    if (bolgeA == bolgeB)
-                    {
-                        ekleA = rnd.Next(2) == 0;
-                    }
-                    else
-                    {
-                        ekleA = bolgeA < bolgeB;
-                    }
+                    ekleA = rolA < rolB;
                 }
                 else
                 {
-                    ekleA = puanA < puanB;
+                    ekleA = puanA == puanB ? rnd.Next(2) == 0 : puanA < puanB;
                 }
 
                 if (ekleA)
@@ -315,6 +343,21 @@ namespace halı_saha
                 lblSayac.Text = "Seçili oyuncu sayısı: 0 / 14";
                 button3.Enabled = false;
             }
+        }
+
+        private static bool IsKaleci(string bolge)
+        {
+            return NormalizeBolge(bolge) == "kaleci";
+        }
+
+        private static bool IsDefans(string bolge)
+        {
+            return NormalizeBolge(bolge) == "defansif";
+        }
+
+        private static bool IsOfans(string bolge)
+        {
+            return NormalizeBolge(bolge) == "ofansif";
         }
     }
 }

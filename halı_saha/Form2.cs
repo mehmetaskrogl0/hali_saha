@@ -94,8 +94,89 @@ namespace halı_saha
                 new PointF(0.42f, 0.72f)
             };
 
-            OyuncuEtiketleriEkle(_takimA, takimAKonumlar, 1);
-            OyuncuEtiketleriEkle(_takimB, takimBKonumlar, 1 + _takimA.Count);
+            List<Form1.SecilenOyuncu> takimASirali = OyunculariPozisyonlaraDagit(_takimA);
+            List<Form1.SecilenOyuncu> takimBSirali = OyunculariPozisyonlaraDagit(_takimB);
+
+            OyuncuEtiketleriEkle(takimASirali, takimAKonumlar, 1);
+            OyuncuEtiketleriEkle(takimBSirali, takimBKonumlar, 1 + _takimA.Count);
+        }
+
+        private List<Form1.SecilenOyuncu> OyunculariPozisyonlaraDagit(List<Form1.SecilenOyuncu> takim)
+        {
+            List<Form1.SecilenOyuncu> kalan = new List<Form1.SecilenOyuncu>(takim);
+            List<Form1.SecilenOyuncu> sirali = new List<Form1.SecilenOyuncu>();
+
+            string[] pozisyonlar = new[] { "kaleci", "defans", "defans", "ofans", "ofans", "ofans", "ofans" };
+
+            foreach (string pozisyon in pozisyonlar)
+            {
+                Form1.SecilenOyuncu oyuncu = SecPozisyonOyuncusu(kalan, pozisyon);
+
+                if (oyuncu == null)
+                {
+                    break;
+                }
+
+                sirali.Add(oyuncu);
+                kalan.Remove(oyuncu);
+            }
+
+            return sirali;
+        }
+
+        private Form1.SecilenOyuncu SecPozisyonOyuncusu(List<Form1.SecilenOyuncu> kalan, string pozisyon)
+        {
+            if (kalan.Count == 0)
+            {
+                return null;
+            }
+
+            Form1.SecilenOyuncu oyuncu;
+
+            if (pozisyon == "kaleci")
+            {
+                oyuncu = kalan.FirstOrDefault(o => IsKaleci(o.Bolge))
+                         ?? kalan.FirstOrDefault(o => IsDefans(o.Bolge))
+                         ?? kalan.FirstOrDefault(o => IsOfans(o.Bolge));
+            }
+            else if (pozisyon == "defans")
+            {
+                oyuncu = kalan.FirstOrDefault(o => IsDefans(o.Bolge))
+                         ?? kalan.FirstOrDefault(o => IsOfans(o.Bolge))
+                         ?? kalan.FirstOrDefault(o => IsKaleci(o.Bolge));
+            }
+            else
+            {
+                oyuncu = kalan.FirstOrDefault(o => IsOfans(o.Bolge))
+                         ?? kalan.FirstOrDefault(o => IsDefans(o.Bolge))
+                         ?? kalan.FirstOrDefault(o => IsKaleci(o.Bolge));
+            }
+
+            return oyuncu ?? kalan.FirstOrDefault();
+        }
+
+        private static bool IsKaleci(string bolge)
+        {
+            return NormalizeBolge(bolge) == "kaleci";
+        }
+
+        private static bool IsDefans(string bolge)
+        {
+            return NormalizeBolge(bolge) == "defans";
+        }
+
+        private static bool IsOfans(string bolge)
+        {
+            return NormalizeBolge(bolge) == "ofans";
+        }
+
+        private void TemizleSahaEtiketleri()
+        {
+            foreach (Control kontrol in Controls.OfType<Control>().Where(c => c.Tag as string == "SahaOyuncu").ToList())
+            {
+                Controls.Remove(kontrol);
+                kontrol.Dispose();
+            }
         }
 
         private void OyuncuEtiketleriEkle(List<Form1.SecilenOyuncu> takim, List<PointF> konumlar, int baslangicNo)
@@ -134,15 +215,6 @@ namespace halı_saha
                 Controls.Add(isim);
                 numara.BringToFront();
                 isim.BringToFront();
-            }
-        }
-
-        private void TemizleSahaEtiketleri()
-        {
-            foreach (Control kontrol in Controls.OfType<Control>().Where(c => c.Tag as string == "SahaOyuncu").ToList())
-            {
-                Controls.Remove(kontrol);
-                kontrol.Dispose();
             }
         }
 
