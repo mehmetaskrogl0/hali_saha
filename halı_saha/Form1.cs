@@ -185,6 +185,7 @@ namespace halı_saha
 
                 Form2 frm2 = new Form2(takimA, takimB);
                 frm2.Show();
+                ;
             }
             else
             {
@@ -223,15 +224,14 @@ namespace halı_saha
                 .ThenBy(o => rnd.Next())
                 .ToList();
 
-            RolleriDagit(kaleciler, "kaleci", 1, takimA, takimB, sayacA, sayacB, ref puanA, ref puanB, rnd);
-            RolleriDagit(defanslar, "defansif", 2, takimA, takimB, sayacA, sayacB, ref puanA, ref puanB, rnd);
-            RolleriDagit(ofanslar, "ofansif", 4, takimA, takimB, sayacA, sayacB, ref puanA, ref puanB, rnd);
+            RolleriDagit(kaleciler, "kaleci", takimA, takimB, sayacA, sayacB, ref puanA, ref puanB, rnd);
+            RolleriDagit(defanslar, "defansif", takimA, takimB, sayacA, sayacB, ref puanA, ref puanB, rnd);
+            RolleriDagit(ofanslar, "ofansif", takimA, takimB, sayacA, sayacB, ref puanA, ref puanB, rnd);
         }
 
         private static void RolleriDagit(
             List<SecilenOyuncu> oyuncular,
             string rol,
-            int maxPerTeam,
             List<SecilenOyuncu> takimA,
             List<SecilenOyuncu> takimB,
             Dictionary<string, int> sayacA,
@@ -242,20 +242,20 @@ namespace halı_saha
         {
             foreach (SecilenOyuncu oyuncu in oyuncular)
             {
-                int rolA = GetBolgeSayisi(sayacA, rol);
-                int rolB = GetBolgeSayisi(sayacB, rol);
-
-                if (rolA >= maxPerTeam)
+                if (takimA.Count == 7)
                 {
                     TakimaEkle(takimB, sayacB, oyuncu, ref puanB);
                     continue;
                 }
 
-                if (rolB >= maxPerTeam)
+                if (takimB.Count == 7)
                 {
                     TakimaEkle(takimA, sayacA, oyuncu, ref puanA);
                     continue;
                 }
+
+                int rolA = GetBolgeSayisi(sayacA, rol);
+                int rolB = GetBolgeSayisi(sayacB, rol);
 
                 bool ekleA;
 
@@ -352,12 +352,14 @@ namespace halı_saha
 
         private static bool IsDefans(string bolge)
         {
-            return NormalizeBolge(bolge) == "defansif";
+            string normalized = NormalizeBolge(bolge);
+            return normalized == "defans" || normalized == "defansif";
         }
 
         private static bool IsOfans(string bolge)
         {
-            return NormalizeBolge(bolge) == "ofansif";
+            string normalized = NormalizeBolge(bolge);
+            return normalized == "ofans" || normalized == "ofansif";
         }
     }
 }

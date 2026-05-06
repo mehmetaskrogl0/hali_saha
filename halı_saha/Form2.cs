@@ -162,12 +162,14 @@ namespace halı_saha
 
         private static bool IsDefans(string bolge)
         {
-            return NormalizeBolge(bolge) == "defans";
+            string normalized = NormalizeBolge(bolge);
+            return normalized == "defans" || normalized == "defansif";
         }
 
         private static bool IsOfans(string bolge)
         {
-            return NormalizeBolge(bolge) == "ofans";
+            string normalized = NormalizeBolge(bolge);
+            return normalized == "ofans" || normalized == "ofansif";
         }
 
         private void TemizleSahaEtiketleri()
