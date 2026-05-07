@@ -184,6 +184,10 @@ namespace halı_saha
                 TakimlariOlustur(secilenler, out takimA, out takimB);
 
                 Form2 frm2 = new Form2(takimA, takimB);
+                frm2.FormClosed += (s, args) =>
+                {
+                    this.Show();
+                };
                 frm2.Show();
                 this.Hide();
 
