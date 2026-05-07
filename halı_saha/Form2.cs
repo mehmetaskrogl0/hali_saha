@@ -77,24 +77,24 @@ namespace halı_saha
 
             List<PointF> takimAKonumlar = new List<PointF>
             {
-                new PointF(0.10f, 0.50f),
-                new PointF(0.23f, 0.28f),
-                new PointF(0.23f, 0.72f),
-                new PointF(0.40f, 0.38f),
-                new PointF(0.40f, 0.62f),
-                new PointF(0.58f, 0.28f),
-                new PointF(0.58f, 0.72f)
+                new PointF(0.08f, 0.50f), // Kaleci
+                new PointF(0.20f, 0.35f), // Defans 1
+                new PointF(0.20f, 0.65f), // Defans 2
+                new PointF(0.38f, 0.50f), // Orta saha
+                new PointF(0.58f, 0.30f), // Forvet 1
+                new PointF(0.58f, 0.50f), // Forvet 2
+                new PointF(0.58f, 0.70f)  // Forvet 3
             };
 
             List<PointF> takimBKonumlar = new List<PointF>
             {
-                new PointF(0.90f, 0.50f),
-                new PointF(0.77f, 0.28f),
-                new PointF(0.77f, 0.72f),
-                new PointF(0.60f, 0.38f),
-                new PointF(0.60f, 0.62f),
-                new PointF(0.42f, 0.28f),
-                new PointF(0.42f, 0.72f)
+                new PointF(0.92f, 0.50f), // Kaleci
+                new PointF(0.80f, 0.35f), // Defans 1
+                new PointF(0.80f, 0.65f), // Defans 2
+                new PointF(0.62f, 0.50f), // Orta saha
+                new PointF(0.42f, 0.30f), // Forvet 1
+                new PointF(0.42f, 0.50f), // Forvet 2
+                new PointF(0.42f, 0.70f)  // Forvet 3
             };
 
             List<Form1.SecilenOyuncu> takimASirali = OyunculariPozisyonlaraDagit(_takimA);
@@ -109,7 +109,7 @@ namespace halı_saha
             List<Form1.SecilenOyuncu> kalan = new List<Form1.SecilenOyuncu>(takim);
             List<Form1.SecilenOyuncu> sirali = new List<Form1.SecilenOyuncu>();
 
-            string[] pozisyonlar = new[] { "kaleci", "defans", "defans", "ofans", "ofans", "ofans", "ofans" };
+            string[] pozisyonlar = new[] { "kaleci", "defans", "defans", "defans", "ofans", "ofans", "ofans" };
 
             foreach (string pozisyon in pozisyonlar)
             {
