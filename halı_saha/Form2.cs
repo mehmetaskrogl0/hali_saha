@@ -56,7 +56,10 @@ namespace halı_saha
             {
                 MessageBox.Show("Oyuncu listesi alınamadı!");
             }
+
+            
         }
+
 
         private void Form2_Resize(object sender, EventArgs e)
         {

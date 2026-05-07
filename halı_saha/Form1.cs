@@ -185,7 +185,9 @@ namespace halı_saha
 
                 Form2 frm2 = new Form2(takimA, takimB);
                 frm2.Show();
-                ;
+                this.Hide();
+
+
             }
             else
             {
