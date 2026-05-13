@@ -97,11 +97,14 @@ namespace halı_saha
                 new PointF(0.42f, 0.70f)  // Forvet 3
             };
 
+            int[] formaNumaralariA = new[] { 1, 2, 3, 10, 7, 9, 11 };
+            int[] formaNumaralariB = new[] { 99, 22, 33, 80, 77, 19, 88 };
+
             List<Form1.SecilenOyuncu> takimASirali = OyunculariPozisyonlaraDagit(_takimA);
             List<Form1.SecilenOyuncu> takimBSirali = OyunculariPozisyonlaraDagit(_takimB);
 
-            OyuncuEtiketleriEkle(takimASirali, takimAKonumlar, 1);
-            OyuncuEtiketleriEkle(takimBSirali, takimBKonumlar, 1 + _takimA.Count);
+            OyuncuEtiketleriEkle(takimASirali, takimAKonumlar, formaNumaralariA);
+            OyuncuEtiketleriEkle(takimBSirali, takimBKonumlar, formaNumaralariB);
         }
 
         private List<Form1.SecilenOyuncu> OyunculariPozisyonlaraDagit(List<Form1.SecilenOyuncu> takim)
@@ -188,7 +191,7 @@ namespace halı_saha
             }
         }
 
-        private void OyuncuEtiketleriEkle(List<Form1.SecilenOyuncu> takim, List<PointF> konumlar, int baslangicNo)
+        private void OyuncuEtiketleriEkle(List<Form1.SecilenOyuncu> takim, List<PointF> konumlar, int[] formaNumaralari)
         {
             int genislik = ClientSize.Width;
             int yukseklik = ClientSize.Height;
@@ -199,10 +202,14 @@ namespace halı_saha
                 int x = (int)(genislik * oran.X);
                 int y = (int)(yukseklik * oran.Y);
 
+                string numaraText = (formaNumaralari != null && i < formaNumaralari.Length)
+                    ? formaNumaralari[i].ToString()
+                    : (i + 1).ToString();
+
                 Label numara = new Label
                 {
                     Tag = "SahaOyuncu",
-                    Text = (baslangicNo + i).ToString(),
+                    Text = numaraText,
                     BackColor = Color.White,
                     ForeColor = Color.Black,
                     Size = new Size(26, 26),

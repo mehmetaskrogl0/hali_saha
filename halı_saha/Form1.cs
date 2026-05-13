@@ -9,11 +9,11 @@ namespace halı_saha
 {
     public partial class Form1 : Form
     {
-        // MySQL bağlantısı (Senin bilgilerine göre düzenlendi)
+        // MySQL bağlantısı 
         private readonly MySqlConnection con = new MySqlConnection("Server=localhost;Database=halı_saha;Uid=root;Pwd=Mehmet042");
         private readonly DataTable dt = new DataTable();
 
-        // Listeleme fonksiyonu (Aynen senin mantığın)
+        
         public void listele()
         {
             dt.Clear();
